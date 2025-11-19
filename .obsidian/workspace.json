@@ -1,0 +1,206 @@
+{
+  "main": {
+    "id": "a225aa63c632a44f",
+    "type": "split",
+    "children": [
+      {
+        "id": "ee23243261026379",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dfcf8cec0970c4ff",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "3f24bdd3059ebd9f",
+    "type": "split",
+    "children": [
+      {
+        "id": "c0a98895ae4ce995",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "260dc7ba12394855",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "022dad5033654a98",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "89b12a643798a3cb",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "754d458eab8c19e0",
+    "type": "split",
+    "children": [
+      {
+        "id": "f9e1755237c6da16",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "792eb0b9e9eb9e85",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "0512628476c738aa",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "45de78a23b84c695",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "720638ce3552fd21",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "1f4704125ae1974f",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "dfcf8cec0970c4ff",
+  "lastOpenFiles": [
+    "TASKS.md",
+    "S-Tools.md",
+    "15 - Information Gathering - Web.md",
+    "14 - Information Gathering - Infra.md",
+    "13 - Information Gathering - Business.md",
+    "12 - Swiss Army Knife.md",
+    "11 - Python Scripting.md",
+    "10 - C Scripting.md",
+    "9 - Windows Shell Scripting.md",
+    "8 - Bash Scripting.md",
+    "7 - Analisadores de tráfego.md",
+    "6 - Redes TCP-IP para Pentest.md",
+    "5 - Análise de Logs.md",
+    "4 - Visão Geral HTTP-WEB.md",
+    "3 - Dominando o Prompt do Windows.md",
+    "2 - Dominando terminais Linux.md",
+    "1 - Introdução a segurança da informação e Pentest.md",
+    "Imagens/Pasted image 20251109204918.png",
+    "Imagens/Pasted image 20251109204900.png",
+    "Imagens/Pasted image 20251109193742.png",
+    "Imagens/Pasted image 20251109193707.png",
+    "Imagens/Pasted image 20251109193548.png",
+    "Imagens/Pasted image 20251109184133.png",
+    "Imagens"
+  ]
+}
